@@ -1,5 +1,4 @@
 package com.gb.interview.homework1;
-
 interface Moveable { // <- Следует ли считать ошибкой написание названий? Если да, то наверно следует написать Movable
     void move();
 }
