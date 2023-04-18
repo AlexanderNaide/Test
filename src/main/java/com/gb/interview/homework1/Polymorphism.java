@@ -11,9 +11,9 @@ public class Polymorphism {
     public static void main(String[] args) {
 
         ArrayList<GeometricalFigure> list = new ArrayList<>(List.of(
-                new Circle("зеленый"),
-                new Square("красный"),
-                new Triangle("синий")
+                new Circle("Р·РµР»РµРЅС‹Р№"),
+                new Square("РєСЂР°СЃРЅС‹Р№"),
+                new Triangle("СЃРёРЅРёР№")
         ));
 
 
@@ -33,7 +33,7 @@ class GeometricalFigure {
     }
 
     public void paint(){
-        System.out.println("Меня покрасили в " + color + " цвет.");
+        System.out.println("РњРµРЅСЏ РїРѕРєСЂР°СЃРёР»Рё РІ " + color + " С†РІРµС‚.");
     }
 }
 
@@ -43,7 +43,7 @@ class Circle extends GeometricalFigure{
     }
     @Override
     public void paint() {
-        System.out.println("Я круг и я покрашен в " + color + " цвет.");
+        System.out.println("РЇ РєСЂСѓРі Рё СЏ РїРѕРєСЂР°С€РµРЅ РІ " + color + " С†РІРµС‚.");
     }
 }
 
@@ -53,7 +53,7 @@ class Square extends GeometricalFigure{
     }
     @Override
     public void paint() {
-        System.out.println("Я квадрат и я покрашен в " + color + " цвет.");
+        System.out.println("РЇ РєРІР°РґСЂР°С‚ Рё СЏ РїРѕРєСЂР°С€РµРЅ РІ " + color + " С†РІРµС‚.");
     }
 }
 
@@ -63,6 +63,6 @@ class Triangle extends GeometricalFigure{
     }
     @Override
     public void paint() {
-        System.out.println("Я треугольник и я покрашен в " + color + " цвет.");
+        System.out.println("РЇ С‚СЂРµСѓРіРѕР»СЊРЅРёРє Рё СЏ РїРѕРєСЂР°С€РµРЅ РІ " + color + " С†РІРµС‚.");
     }
 }
