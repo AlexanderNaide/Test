@@ -1,11 +1,27 @@
 package com.gb.interview.homework2;
 
+import java.util.Arrays;
+import java.util.List;
+
 public class MainLinkedList <T> {
 
     private Node<T> first;
     private Node<T> last;
-
     private int count;
+
+    public MainLinkedList() {
+        this.count = 0;
+    }
+
+    public MainLinkedList(T[] arr) {
+        this.count = 0;
+        Arrays.stream(arr).forEach(this::add);
+    }
+
+    public MainLinkedList(List<T> list) {
+        this.count = 0;
+        list.forEach(this::add);
+    }
 
     public void add(T value){
         Node<T> node = new Node<>(value);
@@ -23,43 +39,60 @@ public class MainLinkedList <T> {
         if(x > count + 1 || x < 0){
             throw new NullPointerException();
         }
+        if (first == null){
+            add(value);
+        }
         Node<T> node = getNodeForIndex(x);
         Node<T> newNode = new Node<>(value);
-        node.getParent().setChild(newNode);
-        newNode.setParent(node.getParent());
-        newNode.setChild(node);
-        node.setParent(newNode);
+        if (node == first){
+            newNode.setChild(node);
+            node.setParent(newNode);
+            first = newNode;
+        } else if (node == last){
+            node.setChild(newNode);
+            newNode.setParent(node);
+            last = newNode;
+        } else {
+            node.getParent().setChild(newNode);
+            newNode.setParent(node.getParent());
+            newNode.setChild(node);
+            node.setParent(newNode);
+        }
         count++;
     }
 
     public void del(T value){
-        if (first != null){
-            Node<T> node = getNodeForValue(value);
-            if (node.getParent() != null){
-                node.getParent().setChild(node.getChild());
-            }
-            if (node.getChild() != null){
-                node.getChild().setParent(node.getParent());
-            }
-            count--;
-        }
+        deleteNode(getNodeForValue(value));
     }
 
     public void remove(int x){
-        if (first != null){
-            Node<T> node = getNodeForIndex(x);
-            if (node.getParent() != null){
-                node.getParent().setChild(node.getChild());
-            }
-            if (node.getChild() != null){
-                node.getChild().setParent(node.getParent());
-            }
-            count--;
-        }
+        deleteNode(getNodeForIndex(x));
     }
 
     public int size(){
         return count;
+    }
+
+    private void deleteNode(Node<T> node){
+        if (first != null){
+            if (node.getParent() != null){
+                if(node.getChild() == null){
+                    node.getParent().setChild(null);
+                    last = node.getParent();
+                } else {
+                    node.getParent().setChild(node.getChild());
+                }
+            }
+            if (node.getChild() != null){
+                if (node.getParent() == null){
+                    node.getChild().setParent(null);
+                    first = node.getChild();
+                } else {
+                    node.getChild().setParent(node.getParent());
+                }
+            }
+            count--;
+        }
     }
 
     private Node<T> getNodeForIndex(int x){
@@ -105,20 +138,27 @@ public class MainLinkedList <T> {
     }
 
     public boolean contains(T value){
+        return search(value) != -1;
+    }
+
+    public int search(T value){
         Node<T> node;
+        int position;
         if (first == null){
-            return false;
+            return -1;
         } else {
             node = first;
+            position = 0;
         }
         do {
             if(node.getValue().equals(value)){
-                return true;
+                return position;
             } else {
                 node = node.getChild();
+                position++;
             }
         } while (!node.equals(last));
-        return false;
+        return -1;
     }
 
     @Override
