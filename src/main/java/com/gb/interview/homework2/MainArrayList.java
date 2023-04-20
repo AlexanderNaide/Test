@@ -45,15 +45,15 @@ public class MainArrayList<T> {
         count++;
     }
 
-    public void add(int x, T value){
-        if (x == count){
+    public void add(int position, T value){
+        if (position == count){
             add(value);
         } else {
             recalculationUp();
-            for (int i = count; i > x; i--) {
+            for (int i = count; i > position; i--) {
                 array[i] = array[i - 1];
             }
-            array[x] = value;
+            array[position] = value;
             count++;
         }
     }
@@ -62,8 +62,8 @@ public class MainArrayList<T> {
         deleteForIndex(search(value));
     }
 
-    public void remove(int x){
-        deleteForIndex(x);
+    public void remove(int position){
+        deleteForIndex(position);
     }
 
     public int size(){
@@ -72,8 +72,8 @@ public class MainArrayList<T> {
 
 
     private void deleteForIndex(int i){
-        if (i >= 0 && i < count - 1){
-            for (int j = i; j < count - 2; j++) {
+        if (i >= 0 && i < count){
+            for (int j = i; j < count - 1; j++) {
                 array[j] = array[j + 1];
             }
             array[count - 1] = null;
