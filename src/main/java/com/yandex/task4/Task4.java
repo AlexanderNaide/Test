@@ -10,12 +10,12 @@ public class Task4 {
         long start1 = System.currentTimeMillis();
         oneAlgorithm();
         System.out.println();
-        System.out.println("������ ����� ����� " + (System.currentTimeMillis() - start1));
+        System.out.println("Первый метод занял " + (System.currentTimeMillis() - start1));
 
         long start2 = System.currentTimeMillis();
         twoAlgorithm();
         System.out.println();
-        System.out.println("������ ����� ����� " + (System.currentTimeMillis() - start2));
+        System.out.println("Второй метод занял " + (System.currentTimeMillis() - start2));
 
     }
 
@@ -81,6 +81,8 @@ public class Task4 {
         Scanner scanner = new Scanner(new File("input.txt"));
         int n = scanner.nextInt();
 
+        System.out.println("-------------------");
+
         ArrayList<Region> regions = new ArrayList<>();
         for (int i = 0; i < n; i++) {
             Region region = new Region();
@@ -108,7 +110,10 @@ public class Task4 {
 
         for (int i = 0; i < s; i++) {
             Schoolmate schoolmate = new Schoolmate();
-            schoolmate.income = getRegionForIncome(regions, scanner.nextInt());
+            int income = scanner.nextInt();
+//            System.out.println("Прочитали " + income);
+//            schoolmate.income = getRegionForIncome(regions, schoolmate);
+            getRegionForIncome(regions, schoolmate);
             schoolmates.add(schoolmate);
         }
 
@@ -149,13 +154,13 @@ public class Task4 {
                 } else if (schoolmates.get(i).education == -1) {
                     sr = schoolmates.get(i).income;
                 } else {
-                    sr = Math.min(schoolmates.get(i).income, schoolmates.get(i).education);
+                    sr = Math.max(schoolmates.get(i).income, schoolmates.get(i).education);
                 }
             }
 
             if (schoolmates.get(i).child == 0) {
                 schoolmates.get(i).result = sr;
-            } else if (schoolmates.get(i).child != 0 && sr == 0) {
+            } else if (schoolmates.get(i).child != 0 && schoolmates.get(i).child < sr) {
                 schoolmates.get(i).result = schoolmates.get(i).child;
             } else {
                 schoolmates.get(i).result = Math.min(schoolmates.get(i).child, sr);
@@ -180,17 +185,58 @@ public class Task4 {
     private static class Schoolmate {
         //        public int position;
         public int income;
+        public int[] incomeResult;
         public int education;
+        public int[] educationResult;
         public int child;
-
         public int result;
     }
 
-    private static int getRegionForIncome(List<Region> list, int income) {
-        if (income < list.get(0).minIncome) {
-            return 0;
-        } else if (income > list.get(list.size() - 1).minIncome) {
-            return -1;
+//    private static int getRegionForIncome(List<Region> list, int income) {
+////        System.out.println("пришло " + income);
+//        if (income < list.get(0).minIncome) {
+////            System.out.println("возвращаем " + 0);
+//            return 0;
+//        } else if (income >= list.get(list.size() - 1).minIncome) {
+////            System.out.println("возвращаем " + 0);
+//            return -1;
+//        }
+//        int left = 0;
+//        int right = list.size();
+//        int y = 0;
+//        int region = -1;
+//        while (left < right) {
+//            y = (left + right) / 2;
+//            if (income >= list.get(y).minIncome && income < list.get(y + 1).minIncome) {
+////                while (income >= list.get(y).minIncome && income < list.get(y + 1).minIncome){
+//                int t = list.get(y).minIncome;
+//                while (list.get(y).minIncome == t){
+//                    y--;
+//                }
+//                region = list.get(y).position;
+//                break;
+//            } else if (income >= list.get(y + 1).minIncome) {
+//                left = ++y;
+//            } else if (income < list.get(y).minIncome) {
+//                right = --y;
+//            }
+//        }
+//            if (region == -1) {
+//            region = list.get(left).position;
+//        }
+//        return region;
+//    }
+
+    private static void getRegionForIncome(List<Region> list, Schoolmate schoolmate) {
+//        System.out.println("пришло " + income);
+        if (schoolmate.income < list.get(0).minIncome) {
+//            System.out.println("возвращаем " + 0);
+            schoolmate.incomeResult = new int[0];
+        } else if (schoolmate.income >= list.get(list.size() - 1).minIncome) {
+//            System.out.println("возвращаем " + 0);
+            schoolmate.incomeResult = new int[list.size()];
+//            schoolmate.incomeResult = list.t;
+
         }
         int left = 0;
         int right = list.size();
@@ -198,19 +244,24 @@ public class Task4 {
         int region = -1;
         while (left < right) {
             y = (left + right) / 2;
-            if (list.get(y).minIncome == income) {
-                region = list.get(y).position;
+            if (schoolmate.income >= list.get(y).minIncome && schoolmate.income < list.get(y + 1).minIncome) {
+//                while (income >= list.get(y).minIncome && income < list.get(y + 1).minIncome){
+//                int t = list.get(y).minIncome;
+//                while (list.get(y).minIncome == t){
+//                    y--;
+//                }
+                region = list.get(y + 1).position;
                 break;
-            } else if (list.get(y).minIncome > income) {
-                right = --y;
-            } else {
+            } else if (schoolmate.income >= list.get(y + 1).minIncome) {
                 left = ++y;
+            } else if (schoolmate.income < list.get(y).minIncome) {
+                right = --y;
             }
         }
         if (region == -1) {
-            region = list.get(left).position;
+            region = list.get(right).position;
         }
-        return region;
+//        return region;
     }
 
     private static int getRegionForEducation(List<Region> list, int education) {
