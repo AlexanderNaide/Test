@@ -1,6 +1,8 @@
 package com.yandex.task4;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.*;
 
 public class Task4 {
@@ -10,12 +12,12 @@ public class Task4 {
         long start1 = System.currentTimeMillis();
         oneAlgorithm();
         System.out.println();
-        System.out.println("Первый метод занял " + (System.currentTimeMillis() - start1));
+        System.out.println("Первый метод занял " + (System.currentTimeMillis() - start1) + " миллисекунд");
 
         long start2 = System.currentTimeMillis();
         twoAlgorithm();
         System.out.println();
-        System.out.println("Второй метод занял " + (System.currentTimeMillis() - start2));
+        System.out.println("Второй метод занял " + (System.currentTimeMillis() - start2) + " миллисекунд");
 
     }
 
@@ -80,10 +82,8 @@ public class Task4 {
         //        Scanner scanner = new Scanner(System.in);
         Scanner scanner = new Scanner(new File("input.txt"));
         int n = scanner.nextInt();
-
-        System.out.println("-------------------");
-
         ArrayList<Region> regions = new ArrayList<>();
+        Set<Region> regionForEducation = new HashSet<>();
         for (int i = 0; i < n; i++) {
             Region region = new Region();
             region.position = i + 1;
@@ -92,14 +92,15 @@ public class Task4 {
         }
         for (int i = 0; i < n; i++) {
             regions.get(i).needEducation = scanner.nextInt();
+            if (regions.get(i).needEducation == 0){
+                regionForEducation.add(regions.get(i));
+            }
         }
         for (int i = 0; i < n; i++) {
             regions.get(i).child = scanner.nextInt();
         }
-
         int s = scanner.nextInt();
         ArrayList<Schoolmate> schoolmates = new ArrayList<>();
-
         regions.sort((r1, r2) -> {
             if (r1.minIncome != r2.minIncome) {
                 return r1.minIncome - r2.minIncome;
@@ -107,26 +108,25 @@ public class Task4 {
                 return r1.position - r2.position;
             }
         });
-
         for (int i = 0; i < s; i++) {
             Schoolmate schoolmate = new Schoolmate();
             int income = scanner.nextInt();
-//            System.out.println("Прочитали " + income);
-//            schoolmate.income = getRegionForIncome(regions, schoolmate);
-            getRegionForIncome(regions, schoolmate);
+            int t = getRegionForIncome(regions, income);
+            if (t != -1){
+                schoolmate.income = new HashSet<>(regions.subList(0, t));
+            } else {
+                schoolmate.income = new HashSet<>(regions);
+            }
             schoolmates.add(schoolmate);
         }
 
-        regions.sort((r1, r2) -> {
-            if (r1.needEducation != r2.needEducation) {
-                return r1.needEducation - r2.needEducation;
-            } else {
-                return r1.position - r2.position;
-            }
-        });
-
         for (int i = 0; i < s; i++) {
-            schoolmates.get(i).education = getRegionForEducation(regions, scanner.nextInt());
+            int education = scanner.nextInt();
+            if (education == 1){
+                schoolmates.get(i).education = new HashSet<>(regions);
+            } else {
+                schoolmates.get(i).education = regionForEducation;
+            }
         }
 
         regions.sort(Comparator.comparing(region -> region.position));
@@ -134,36 +134,29 @@ public class Task4 {
         for (int i = 0; i < s; i++) {
             int child = scanner.nextInt();
             if (child != 0 && regions.get(child - 1).child == 1){
-                schoolmates.get(i).child = child;
+                schoolmates.get(i).child = regions.get(child - 1);
             } else {
-                schoolmates.get(i).child = 0;
+                schoolmates.get(i).child = null;
             }
         }
 
         scanner.close();
 
         for (int i = 0; i < s; i++) {
-            int sr;
-            if (schoolmates.get(i).income == 0 || schoolmates.get(i).education == 0) {
-                sr = 0;
-            } else if (schoolmates.get(i).income == -1 && schoolmates.get(i).education == -1) {
-                sr = regions.get(0).position;
-            } else {
-                if (schoolmates.get(i).income == -1) {
-                    sr = schoolmates.get(i).education;
-                } else if (schoolmates.get(i).education == -1) {
-                    sr = schoolmates.get(i).income;
-                } else {
-                    sr = Math.max(schoolmates.get(i).income, schoolmates.get(i).education);
-                }
+            int priorityRegion = 0;
+            Set<Region> availableRegions = new HashSet<>(schoolmates.get(i).income);
+            availableRegions.retainAll(schoolmates.get(i).education);
+            ArrayList<Region> r = new ArrayList<>(availableRegions);
+            r.sort(Comparator.comparing(region -> region.position));
+            if (r.size() != 0){
+                priorityRegion = r.get(0).position;
             }
-
-            if (schoolmates.get(i).child == 0) {
-                schoolmates.get(i).result = sr;
-            } else if (schoolmates.get(i).child != 0 && schoolmates.get(i).child < sr) {
-                schoolmates.get(i).result = schoolmates.get(i).child;
+            if (schoolmates.get(i).child == null) {
+                schoolmates.get(i).result = priorityRegion;
+            } else if (priorityRegion == 0) {
+                schoolmates.get(i).result = schoolmates.get(i).child.position;
             } else {
-                schoolmates.get(i).result = Math.min(schoolmates.get(i).child, sr);
+                schoolmates.get(i).result = Math.min(schoolmates.get(i).child.position, priorityRegion);
             }
         }
 
@@ -183,60 +176,17 @@ public class Task4 {
     }
 
     private static class Schoolmate {
-        //        public int position;
-        public int income;
-        public int[] incomeResult;
-        public int education;
-        public int[] educationResult;
-        public int child;
+        public Set<Region> income;
+        public Set<Region> education;
+        public Region child;
         public int result;
     }
 
-//    private static int getRegionForIncome(List<Region> list, int income) {
-////        System.out.println("пришло " + income);
-//        if (income < list.get(0).minIncome) {
-////            System.out.println("возвращаем " + 0);
-//            return 0;
-//        } else if (income >= list.get(list.size() - 1).minIncome) {
-////            System.out.println("возвращаем " + 0);
-//            return -1;
-//        }
-//        int left = 0;
-//        int right = list.size();
-//        int y = 0;
-//        int region = -1;
-//        while (left < right) {
-//            y = (left + right) / 2;
-//            if (income >= list.get(y).minIncome && income < list.get(y + 1).minIncome) {
-////                while (income >= list.get(y).minIncome && income < list.get(y + 1).minIncome){
-//                int t = list.get(y).minIncome;
-//                while (list.get(y).minIncome == t){
-//                    y--;
-//                }
-//                region = list.get(y).position;
-//                break;
-//            } else if (income >= list.get(y + 1).minIncome) {
-//                left = ++y;
-//            } else if (income < list.get(y).minIncome) {
-//                right = --y;
-//            }
-//        }
-//            if (region == -1) {
-//            region = list.get(left).position;
-//        }
-//        return region;
-//    }
-
-    private static void getRegionForIncome(List<Region> list, Schoolmate schoolmate) {
-//        System.out.println("пришло " + income);
-        if (schoolmate.income < list.get(0).minIncome) {
-//            System.out.println("возвращаем " + 0);
-            schoolmate.incomeResult = new int[0];
-        } else if (schoolmate.income >= list.get(list.size() - 1).minIncome) {
-//            System.out.println("возвращаем " + 0);
-            schoolmate.incomeResult = new int[list.size()];
-//            schoolmate.incomeResult = list.t;
-
+    private static int getRegionForIncome(List<Region> list, int income) {
+        if (income < list.get(0).minIncome) {
+            return 0;
+        } else if (income >= list.get(list.size() - 1).minIncome) {
+            return -1;
         }
         int left = 0;
         int right = list.size();
@@ -244,34 +194,22 @@ public class Task4 {
         int region = -1;
         while (left < right) {
             y = (left + right) / 2;
-            if (schoolmate.income >= list.get(y).minIncome && schoolmate.income < list.get(y + 1).minIncome) {
-//                while (income >= list.get(y).minIncome && income < list.get(y + 1).minIncome){
-//                int t = list.get(y).minIncome;
-//                while (list.get(y).minIncome == t){
-//                    y--;
-//                }
-                region = list.get(y + 1).position;
+            if (income >= list.get(y).minIncome && income < list.get(y + 1).minIncome) {
+                int t = list.get(y).minIncome;
+                while (y < list.size() - 2 && list.get(y + 1).minIncome == t){
+                    y++;
+                }
+                region = y;
                 break;
-            } else if (schoolmate.income >= list.get(y + 1).minIncome) {
+            } else if (y < list.size() - 2 && income >= list.get(y + 1).minIncome) {
                 left = ++y;
-            } else if (schoolmate.income < list.get(y).minIncome) {
+            } else if (income < list.get(y).minIncome) {
                 right = --y;
             }
         }
-        if (region == -1) {
-            region = list.get(right).position;
+            if (region == -1) {
+            region = left;
         }
-//        return region;
+        return region + 1;
     }
-
-    private static int getRegionForEducation(List<Region> list, int education) {
-        if (education == list.get(0).needEducation) {
-            return list.get(0).position;
-        } else if (education == 1) {
-            return -1;
-        } else {
-            return 0;
-        }
-    }
-
 }
