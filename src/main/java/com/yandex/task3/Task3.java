@@ -14,6 +14,7 @@ public class Task3 {
             input.add(new Position(i + 1, scanner.nextInt()));
         }
         scanner.close();
+
         ArrayList<Order> orders = new ArrayList<>();
 
         input.sort(Comparator.comparing(p -> p.price));
@@ -22,15 +23,9 @@ public class Task3 {
         int right = input.size() - 1;
         Position one;
         Position two;
-//        int pivot = (input.get(right).price - input.get(left).price) / 2;
-//        while(input.get(left).price < pivot){
-//        while(input.get(left).price < input.get(right).price){
-        while(left < right){
+        while(input.get(left).price < input.get(right).price){
             one = input.get(left);
-            right = input.size() - 1;
-//            while(input.get(right).price > pivot){
-//            while(input.get(left).price < input.get(right).price){
-            while(left < right){
+            while(input.get(left).price < input.get(right).price){
                 two = input.get(right);
                 if (one.day < two.day){
                     Order order = new Order();
@@ -43,42 +38,36 @@ public class Task3 {
                 }
                 right -= 1;
             }
+            right = input.size() - 1;
             left += 1;
         }
 
-        System.out.println(orders.size());
-        System.out.println(orders.stream().map(o -> o.profit).toList());
-
-        ArrayList<ArrayList<Order>> ddd = new ArrayList<>();
+        ArrayList<Order> maxProfit = new ArrayList<>();
+        int tempProfit = 0;
         for (int i = 0; i < orders.size() - 1; i++) {
-            ddd.add(new ArrayList<>());
+            ArrayList<Order> currentThread = new ArrayList<>();
             Order order = orders.get(i);
             int closeDay = order.closeDay;
-            ddd.get(i).add(order);
+            currentThread.add(order);
+            int currentProfit = order.profit;
             for (int j = i + 1; j < orders.size() - 1; j++) {
-                Order order1 = orders.get(j);
-                if(order1.openDay > closeDay){
-                    ddd.get(i).add(order1);
+                Order anotherOrder = orders.get(j);
+                if(anotherOrder.openDay > closeDay){
+                    currentThread.add(anotherOrder);
+                    currentProfit += anotherOrder.profit;
+                    break;
                 }
+            }
+            if (currentProfit > tempProfit){
+                tempProfit = currentProfit;
+                maxProfit = currentThread;
             }
         }
 
-        for (int i = 0; i < ddd.size() - 1; i++) {
-            System.out.println(ddd.get(i).stream().map(o -> o.profit).toList());
+        System.out.println(maxProfit.size());
+        if (maxProfit.size() != 0){
+            maxProfit.forEach(o -> System.out.println(o.openDay + " " + o.closeDay));
         }
-
-
-
-
-
-
-
-
-
-
-
-
-
     }
 
     private static class Position{
