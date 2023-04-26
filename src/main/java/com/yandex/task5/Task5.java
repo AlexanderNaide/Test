@@ -11,83 +11,94 @@ public class Task5 {
         Scanner scanner = new Scanner(new File("src/main/java/com/yandex/task5/input.txt"));
         int n = scanner.nextInt();
         int k = scanner.nextInt();
+        HashMap<Integer, Symbol> mi = new HashMap<>();
+//        HashMap<Integer, Symbol> reserv = new HashMap<>();
 
-//        Map<Integer, Integer> mi = new LinkedHashMap<>();
-        ArrayList<Integer> mi = new ArrayList<>();
         scanner.nextLine();
         String s = scanner.nextLine();
         char[] chars = s.toCharArray();
-        for (int i = 0; i < n; i++) {
-            mi.add(((int) chars[i]) - 97);
-//            mi.put(((int) chars[i]) - 97, 0);
+        for (int i = 1; i <= n; i++) {
+            Symbol symbol = new Symbol();
+            symbol.m = ((int) chars[i - 1]) - 97;
+            symbol.count = 0;
+            mi.put(i, symbol);
         }
-        int[] pi = new int[n];
-        int[] di = new int[n];
-        for (int i = 0; i < n; i++) {
-            pi[i] = scanner.nextInt();
+        for (int i = 1; i <= n; i++) {
+            mi.get(i).next = scanner.nextInt();
         }
-        for (int i = 0; i < n; i++) {
-            di[i] = scanner.nextInt();
+        for (int i = 1; i <= n; i++) {
+            mi.get(i).offset = scanner.nextInt();
+//            reserv.put(i, new Symbol(mi.get(i)));
         }
         scanner.close();
-        ArrayList<Integer> temp = new ArrayList<>();
-        int count = 0;
+
+        long fullCount = 0;
+        long count;
+        Set<Integer> temp;
+        int j;
+        int next;
+
 
         for (int i = 0; i < n; i++) {
-            temp.clear();
-            int m = mi.get(i);
-            int p = i;
-            int j = 0;
+            Map<Integer, Symbol> currentMi = new HashMap<>();
+            mi.forEach((u, v) -> currentMi.put(u, v.clone()));
+
+            count = 0;
+            temp = new HashSet<>();
+            j = 0;
+            next = 0;
             while (j < k){
-//                                    System.out.println("mi = " + (((j) / n) + 1));
-                System.out.println(Character.toChars(m + 97));
-                if (!temp.contains(m)){
-                    temp.add(m);
-                    count +=  1;
-                    m = mi.get(pi[p] - 1);
-                    j++;
+                Symbol currentSymbol;
+                if (j == 0){
+                    currentSymbol = currentMi.get(i + 1);
                 } else {
-
-//                    System.out.println("--------------");
-//                    System.out.println("было " + m + " - " + Arrays.toString(Character.toChars(m + 97)));
-//                    System.out.println("проверка:");
-//                    System.out.println("m = " + m);
-//                    System.out.println("mi = " + ((k + 1) / n));
-//                    System.out.println("p = " + p);
-//                    System.out.println("d = " + di[p]);
-
-                    m = (m + ((j / n + 1) - 1) * di[p]) % 26;
-//                    System.out.println("стало " + m + " - " + Arrays.toString(Character.toChars(m + 97)));
-
-//                    System.out.println("--------------");
+                    currentSymbol = currentMi.get(next);
                 }
+                currentSymbol.count += 1;
 
-                p = pi[p] - 1;
-                System.out.println(temp.stream().map(o -> (char) (o + 97)).toList() + " - " + count);
+                if (currentSymbol.count > 1){
+                    currentSymbol.m = (currentSymbol.m + (currentSymbol.count - 1) * currentSymbol.offset) % 26;
+                    currentSymbol.count = 1;
+                }
+                if (!temp.contains(currentSymbol.m)){
+                    count +=  1;
+                    temp.add(currentSymbol.m);
+                }
+                fullCount = fullCount + count;
+                next = currentSymbol.next;
+                j++;
             }
-            System.out.println(temp.stream().map(o -> (char) (o + 97)).toList());
         }
 
-        System.out.println(count);
-
-        System.out.println((25 + ((3 / n + 1) - 1) * di[2]) % 26);
-//        System.out.println((25 + ((k + 1) / n - 1) * di[3 - 1]) % 26);
+        System.out.println(fullCount);
 
 
-//        System.out.println("***********");
-//
-//        System.out.println(0 % 3);
-//        System.out.println(1 % 3);
-//        System.out.println(2 % 3);
-//        System.out.println(3 % 3);
-//        System.out.println(4 % 3);
-//        System.out.println(5 % 3);
-//        System.out.println(6 % 3);
-//        System.out.println(7 % 3);
+    }
 
+    private static class Symbol implements Cloneable {
+        int m;
+        int next;
+        int offset;
+        int count;
 
+        public Symbol() {
+        }
 
+        public Symbol(Symbol symbol) {
+            this.m = symbol.m;
+            this.next = symbol.next;
+            this.offset = symbol.offset;
+            this.count = symbol.count;
+        }
 
-
+        @Override
+        public Symbol clone() {
+            try {
+                // TODO: copy mutable state here, so the clone can't change the internals of the original
+                return (Symbol) super.clone();
+            } catch (CloneNotSupportedException e) {
+                throw new AssertionError();
+            }
+        }
     }
 }
