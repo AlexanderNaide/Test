@@ -1,15 +1,16 @@
 package com.yandex.task5;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.*;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Scanner;
+import java.util.Set;
 
-public class Task5 {
+public class Task5rel {
     public static void main(String[] args) throws IOException {
         //        Scanner scanner = new Scanner(System.in);
         Scanner scanner = new Scanner(new File("src/main/java/com/yandex/task5/input.txt"));
-        long start = System.currentTimeMillis();
         int n = scanner.nextInt();
         int k = scanner.nextInt();
         HashMap<Integer, Symbol> mi = new HashMap<>();
@@ -18,8 +19,8 @@ public class Task5 {
         char[] chars = s.toCharArray();
         for (int i = 1; i <= n; i++) {
             Symbol symbol = new Symbol();
-            symbol.tempM = ((int) chars[i - 1]) - 97;
-            symbol.tempCount = 0;
+            symbol.memM = ((int) chars[i - 1]) - 97;
+            symbol.memCount = 0;
             mi.put(i, symbol);
         }
         for (int i = 1; i <= n; i++) {
@@ -30,11 +31,6 @@ public class Task5 {
         }
         scanner.close();
 
-        StringBuilder sb = new StringBuilder();
-
-        long step1 = System.currentTimeMillis();
-        System.out.println("Первый шаг: " + (step1 - start));
-
         long fullCount = 0;
         long count;
         Set<Integer> temp;
@@ -43,7 +39,6 @@ public class Task5 {
 
         for (int i = 0; i < n; i++) {
 
-            sb.setLength(0);
             mi.forEach((u, v) -> v.reset());
             count = 0;
             temp = new HashSet<>();
@@ -62,22 +57,16 @@ public class Task5 {
                     currentSymbol.m = (currentSymbol.m + (currentSymbol.count - 1) * currentSymbol.offset) % 26;
                     currentSymbol.count = 1;
                 }
-                sb.append((char) (currentSymbol.m + 97));
                 if (!temp.contains(currentSymbol.m)){
                     count +=  1;
                     temp.add(currentSymbol.m);
                 }
                 fullCount = fullCount + count;
-                System.out.println(sb + " - " + count);
                 next = currentSymbol.next;
                 j++;
             }
         }
-        long step2 = System.currentTimeMillis();
-        System.out.println("второй шаг: " + (step2 - step1));
-
         System.out.println(fullCount);
-
 
     }
 
@@ -86,14 +75,11 @@ public class Task5 {
         int next;
         int offset;
         int count;
-
-        int tempM;
-
-        int tempCount;
-
+        int memM;
+        int memCount;
         public void reset(){
-            m = tempM;
-            count = tempCount;
+            m = memM;
+            count = memCount;
         }
     }
 }
