@@ -17,7 +17,9 @@ public class reviewDB {
         try {
             start();
 
-            SELECT * FROM test.movies;
+            // https://antonz.ru/window-offset/
+
+/*            SELECT * FROM test.movies;
 
             select m.title, s.date_time, m.duration from movies as m
             join test.schedule as s
@@ -29,7 +31,38 @@ public class reviewDB {
             on s.movie_id = m.id
             where s.sinema_hall = 1
             and (s.date_time + m.duration) > s.date_time + 1
-            order by finish;
+            order by finish;*/
+
+
+            /*
+            select s.id, m.title, s.date_time, m.duration, lead(date_time, 1) over w as next, lead(m.title, 1) over w as next_movie
+            from schedule as s
+            left join movies as m
+            on s.movie_id = m.id
+            where s.sinema_hall = 1
+            window w as ();
+
+            select s.id, m.title, s.date_time, m.duration, lead(date_time, 1) over () as next, lead(m.title, 1) over () as next_movie
+            from schedule as s
+            left join movies as m
+            on s.movie_id = m.id
+            where s.sinema_hall = 1;
+
+            select
+            s.id,
+            m.title,
+            s.date_time,
+            m.duration,
+            (s.date_time + m.duration) as full_duration,
+            (lead(date_time, 1) over () - (s.date_time + m.duration)) as gap,
+            lead(date_time, 1) over () as next,
+            lead(m.title, 1) over () as next_movie
+            from schedule as s
+            left join movies as m
+            on s.movie_id = m.id
+            where s.sinema_hall = 1;
+
+            */
 
             String createTableMovies = "CREATE TABLE IF NOT EXISTS `test`.`movies` (\n" +
                     "  `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,\n" +
