@@ -45,6 +45,65 @@ public class reviewDB {
 
 
 
+            /*
+            SELECT * FROM test.movies;
+
+select m.id, m.title, count(t.id) as 'total tickets', sum(t.price) over w as 'total price'
+from test.movies as m
+left join test.schedule as s
+on m.id = s.movie_id
+join test.tickets as t
+on s.id = t.seans_id
+window w as (partition by t.seans_id)
+order by m.id;
+
+select m.id, m.title, t.seans_id, t.price, sum(t.price) over w as 'total price', count(t.id) over w as 'total count'
+from test.movies as m
+left join test.schedule as s
+on m.id = s.movie_id
+join test.tickets as t
+on s.id = t.seans_id
+window w as (partition by t.seans_id)
+order by m.id, t.seans_id;
+
+select m.id, m.title, count(t.id) as 'total tickets', avg(count(*)) over w as 'avg ticket'
+from test.movies as m
+left join test.schedule as s
+on m.id = s.movie_id
+join test.tickets as t
+on s.id = t.seans_id
+window w as (partition by t.seans_id)
+order by m.id;
+
+
+SELECT s.id, m.title
+FROM test.schedule as s
+left join test.movies as m
+on s.movie_id = m.id
+order by s.id;
+
+select m.id, m.title, t.seans_id, sum(t.price) over w as 'total price', count(t.id) over w as 'total count'
+from test.movies as m
+left join test.schedule as s
+on m.id = s.movie_id
+join test.tickets as t
+on s.id = t.seans_id
+window w as (partition by t.seans_id)
+order by t.seans_id;
+
+select m.id, m.title, t.seans_id, sum(t.price) over w as 'total price', count(*) over w as 'total count', avg(t.id) over w as 'avg count'
+from test.movies as m
+left join test.schedule as s
+on m.id = s.movie_id
+left join test.tickets as t
+on s.id = t.seans_id
+window w as (partition by t.seans_id)
+order by m.id;
+             */
+
+
+
+
 
         } catch (ClassNotFoundException | ParseException e) {
             throw new RuntimeException(e);
