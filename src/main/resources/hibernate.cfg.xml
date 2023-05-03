@@ -3,34 +3,16 @@
         "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
 <hibernate-configuration>
     <session-factory>
-<!--        <property name="connection.driver_class">com.mysql.cj.jdbc.Driver</property>-->
-        <property name="connection.driver_class">com.mysql.jdbc.Driver</property>
-        <property name="connection.url">jdbc:mysql://localhost:3306/spring_hibernate?createDatabaseIfNotExist=true&amp;allowPublicKeyRetrieval=true&amp;useSSL=false&amp;useUnicode=true&amp;characterEncoding=UTF-8&amp;serverTimezone=UTC</property>
+        <property name="connection.driver_class">com.mysql.cj.jdbc.Driver</property>
+<!--        <property name="connection.driver_class">com.mysql.jdbc.Driver</property>-->
+        <property name="connection.url">jdbc:mysql://localhost:3306/test?createDatabaseIfNotExist=true&amp;allowPublicKeyRetrieval=true&amp;useSSL=false&amp;useUnicode=true&amp;characterEncoding=UTF-8&amp;serverTimezone=UTC</property>
         <property name="connection.username">root</property>
-        <property name="connection.password">312808895</property>
+        <property name="connection.password">6830</property>
         <property name="connection.pool_size">8</property>
         <property name="current_session_context_class">thread</property>
-        <property name="hibernate.hbm2ddl.auto">update</property>
+        <property name="hibernate.hbm2ddl.auto">create</property>
 
-
-<!--            <property name="hibernate.hbm2ddl.auto"> - Авто экспорт/обновление схемы-->
-<!--            import.sql работает прт create/create-drop-->
-
-<!--            <property name="hibernate.hbm2ddl.auto">create</property>-->
-<!--            Полная очистка схемы и создания её при разметки Hibernate-->
-
-<!--            <property name="hibernate.hbm2ddl.auto">update</property>-->
-<!--            Обновляет структуру схемы-->
-<!--            Применять надо очень осторожно, если вообще стоит это делать-->
-
-<!--            <property name="hibernate.hbm2ddl.auto">validate</property>-->
-<!--            Выполняет проверку схемы и не вносит в неё никаких изменений-->
-
-<!--            <property name="hibernate.hbm2ddl.auto">create-drop</property>-->
-<!--            Полная очистка схемы и создание её по разметки Hibernate. После закрытия Factory Выполняется Drop-->
-
-
-        <property name="hibernate.show_sql">true</property>
+<!--        <property name="hibernate.show_sql">true</property>-->
         <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
         <property name="hibernate.format_sql">true</property>
 
