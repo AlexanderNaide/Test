@@ -1,22 +1,16 @@
 package com.gb.interview.homework5_Hibernate;
 
 import com.gb.interview.homework5_Hibernate.model.Student;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityManagerFactory;
-import org.hibernate.cfg.Configuration;
 
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
 public class App {
 
-    private static StudentDao dao;
-
     public static void main(String[] args) {
         try{
 
-            dao = new StudentDao(ManagerFactory.getEntityManagerFactory().createEntityManager());
+            Dao dao = new StudentDao(ManagerFactory.getEntityManagerFactory().createEntityManager());
 
             // создание 1000 студентов
             for (int i = 0; i < 1000; i++) {

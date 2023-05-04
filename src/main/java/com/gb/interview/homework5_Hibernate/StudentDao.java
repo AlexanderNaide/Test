@@ -8,7 +8,7 @@ import jakarta.persistence.TypedQuery;
 import java.util.List;
 import java.util.function.Consumer;
 
-public class StudentDao {
+public class StudentDao implements Dao{
     private final EntityManager em;
 
     public StudentDao(EntityManager em) {
