@@ -18,6 +18,55 @@ public class backpack {
 
         int maxValue = 4;
 
+//        Cell[][] grid = getCellsVar1(list, maxValue);
+        Cell[][] grid = getCellsVar2(list, maxValue);
+
+        for (int i = 0; i < grid[0].length; i++) {
+            System.out.println("-----------");
+            Cell itogCell = grid[grid.length - 1][i];
+
+            System.out.println(itogCell);
+            itogCell.selectedThing.forEach(c -> System.out.println(c.name));
+        }
+
+
+    }
+
+    private static Cell[][] getCellsVar2(ArrayList<Thing> list, int maxValue) {
+        Cell[][] grid = new Cell[list.size()][maxValue];
+
+
+        for (int i = 0; i < list.size(); i++) {
+            Thing t = list.get(i);
+            System.out.println(t.name + " >>>");
+            for (int j = 0; j < grid[i].length; j++) {
+                int c = 0;
+                if (i == 0) c = 1;
+                if ()
+
+
+                if (i == 0 || grid[i - 1][j] == null){
+                    grid[i][j] = t.weight <= (j + 1) ? new Cell(t) : null;
+                } else {
+                    if (t.weight < (j + 1)){
+                        grid[i][j] = t.price < grid[i - 1][j].totalPrice ? grid[i - 1][j] : new Cell(t, grid[i][j - t.weight]);
+                    } else if (t.weight == (j + 1)){
+                        grid[i][j] = t.price < grid[i - 1][j].totalPrice ? grid[i - 1][j] : new Cell(t);
+                    } else {
+                        grid[i][j] = grid[i - 1][j];
+                    }
+
+
+                }
+
+                System.out.println(" >>> " + grid[i][j]);
+
+            }
+        }
+        return grid;
+    }
+
+    private static Cell[][] getCellsVar1(ArrayList<Thing> list, int maxValue) {
         Cell[][] grid = new Cell[list.size()][maxValue];
 
 
@@ -33,7 +82,7 @@ public class backpack {
                             Cell newCell = new Cell(grid[i-1][j].totalPrice + t.price, t, grid[i-1][j].selectedThing);
                             grid[i][j] = newCell;
                         } else if (t.weight <= j + 1){
-                            Cell newCell = new Cell(t.price, t);
+                            Cell newCell = new Cell(t);
                             grid[i][j] = newCell;
                         } else {
                             grid[i][j] = oldCell;
@@ -45,7 +94,7 @@ public class backpack {
 //                    grid[i][j] = grid[i-1][j].totalPrice > (t.weight <= (j + 1) - grid[i-1][j].currentWeight ? t.price : 0) ? grid[i-1][j] : new Cell(grid[i-1][j].totalPrice + t.price, t, grid[i-1][j].selectedThing);
                 } else {
                     if (t.weight <= j + 1){
-                        Cell newCell = new Cell(t.price, t);
+                        Cell newCell = new Cell(t);
                         grid[i][j] = newCell;
                     }
 //                    grid[i][j] = t.weight <= j + 1 ? new Cell(t.price, t) : null;
@@ -54,16 +103,7 @@ public class backpack {
             }
 
         }
-
-        for (int i = 0; i < grid[0].length; i++) {
-            System.out.println("-----------");
-            Cell itogCell = grid[grid.length - 1][i];
-
-            System.out.println(itogCell);
-            itogCell.selectedThing.forEach(c -> System.out.println(c.name));
-        }
-
-
+        return grid;
     }
 
     private static class Thing{
@@ -83,11 +123,26 @@ public class backpack {
         ArrayList<Thing> selectedThing;
         int currentWeight;
 
-        public Cell(int totalPrice, Thing thing) {
-            this.totalPrice = totalPrice;
+        public Cell(Thing thing) {
+            this.totalPrice = thing.price;
             this.selectedThing = new ArrayList<>();
             this.selectedThing.add(thing);
             this.currentWeight = thing.weight;
+        }
+
+        public Cell(Thing thing, Cell oldCell) {
+            if (oldCell == null){
+                this.totalPrice = thing.price;
+                this.selectedThing = new ArrayList<>();
+                this.selectedThing.add(thing);
+                this.currentWeight = thing.weight;
+            } else {
+                this.totalPrice = thing.price + oldCell.totalPrice;
+                this.selectedThing = new ArrayList<>();
+                this.selectedThing.addAll(oldCell.selectedThing);
+                this.selectedThing.add(thing);
+                this.currentWeight = thing.weight + oldCell.currentWeight;
+            }
         }
 
         public Cell(int totalPrice, Thing thing, ArrayList<Thing> oldThings) {
