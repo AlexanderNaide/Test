@@ -1,10 +1,10 @@
 package com.tinkoff.trening;
 
+import org.w3c.dom.ls.LSOutput;
+
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Scanner;
+import java.util.*;
 
 /**
  *
@@ -57,38 +57,36 @@ public class task06new {
     public static void main(String[] args) throws FileNotFoundException {
         long startTime = System.currentTimeMillis();
         long startMem = Runtime.getRuntime().freeMemory();
-        Scanner scanner = new Scanner(new FileInputStream("C:\\Users\\al121\\IdeaProjects\\Test\\src\\main\\java\\com\\tinkoff\\trening\\input6.txt"));
-        ArrayList<Integer> odd = new ArrayList<>();
-//        ArrayList<Integer> even = new ArrayList<>();
-        long n = scanner.nextLong();
+
+
+//        Scanner scanner = new Scanner(new FileInputStream("C:\\Users\\al121\\IdeaProjects\\Test\\src\\main\\java\\com\\tinkoff\\trening\\input6.txt"));
+        Scanner scanner = new Scanner(new FileInputStream("C:\\Users\\GVoichuk\\IdeaProjects\\Test\\src\\main\\java\\com\\tinkoff\\trening\\input6.txt"));
+        int n = scanner.nextInt();
+        ArrayList<Integer> dev = new ArrayList<>();
+        int[] arr = new int[n];
+
         for (int i = 0; i < n; i++) {
-            int a = scanner.nextInt();
-            if (a % 2 != (i + 1) % 2){
-                odd.add(i + 1);
-            }
-//            if (a % 2 == (i + 1) % 2){
-//                even.add(i);
-//            }
+            arr[i] = scanner.nextInt();
         }
         scanner.close();
 
-        if (odd.size() == 2){
-            System.out.println(odd.get(0) + "  " + odd.get(1));
+        int[] sortedArr = Arrays.copyOf(arr, arr.length);
+        Arrays.sort(sortedArr);
+
+        for (int i = 0; i < arr.length; i++) {
+
+            if (arr[i] != sortedArr[i] || sortedArr[i] % 2 != (i + 1) % 2){
+                dev.add(i + 1);
+            }
+        }
+
+        System.out.println(dev);
+
+        if (dev.size() == 2){
+            System.out.println(dev.get(0) + "  " + dev.get(1));
         } else {
             System.out.println("-1 -1");
         }
-
-        System.out.println(odd);
-
-//        if (even.size() == 2){
-//            System.out.println((even.get(0) + 1) + "  " + (even.get(1) + 1));
-//        } else {
-//            System.out.println("-1 -1");
-//        }
-//
-//        System.out.println(even);
-
-
 
         System.out.println("Время, сек: " + (System.currentTimeMillis() - startTime)/1000);
         System.out.println("Память, mB : " + (startMem - Runtime.getRuntime().freeMemory()) / (8 * 1024));
