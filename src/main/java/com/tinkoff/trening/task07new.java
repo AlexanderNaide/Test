@@ -48,14 +48,15 @@ public class task07new {
         Scanner scanner = new Scanner(new FileInputStream("C:\\Users\\GVoichuk\\IdeaProjects\\Test\\src\\main\\java\\com\\tinkoff\\trening\\input7.txt"));
 //        Scanner scanner = new Scanner(new FileInputStream("C:\\Users\\GVoichuk\\IdeaProjects\\Test\\src\\main\\java\\com\\tinkoff\\trening\\input7full.txt"));
         int n = scanner.nextInt();
-        ArrayList<Integer> ff = new ArrayList<>();
-        for (int i = 0; i < n; i++) {
-            ff.add(i + 1);
-        }
+//        ArrayList<Integer> ff = new ArrayList<>();
+//        for (int i = 0; i < n; i++) {
+//            ff.add(i + 1);
+//        }
         int[] dd = new int[n];
-//        ArrayList<Integer> mm = new ArrayList<>(n);
-//        Map<Integer, Integer> map = new HashMap<>();
+        ArrayList<Integer> mm = new ArrayList<>(n);
+        Map<Integer, Integer> map = new HashMap<>();
 //        Arrays.fill(dd, -1);
+        ArrayList<Integer> s = new ArrayList<>();
         int x = 0;
 //        int y = 0;
         for (int i = 1; i <= n; i++) {
@@ -63,12 +64,15 @@ public class task07new {
             if (a - 1 != i && dd[a - 1] == 0){
                 dd[a - 1] = i;
 //                mm.set(a - 1, i);
-//                map.put(i, a - 1);
+//                mm.add(a - 1, i);
+                map.put(a, i);
+                s.add(i);
             } else {
                 x = dd[a - 1];
 //                y = i;
                 dd[a - 1] = i;
-//                mm.add(a - 1, i);
+                map.put(a, i);
+                s.add(i);
             }
         }
 
@@ -77,8 +81,18 @@ public class task07new {
         System.out.println(Arrays.toString(dd));
 //        map.forEach((k, v) -> System.out.println(k + " " + v));
         System.out.println(x);
+        System.out.println(map);
+
+        System.out.println(s);
+        ArrayList<Integer> copyS = new ArrayList<>(s);
+        s.removeAll(map.values());
+        copyS.removeAll(map.keySet());
+
+        System.out.println(s);
+        System.out.println(copyS);
+//        System.out.println(mm.indexOf(0));
 //        ff.removeAll(mm);
-        System.out.println(ff);
+//        System.out.println(ff);
 //        System.out.println(Arrays.binarySearch(dd, 0));
         System.out.println();
 
