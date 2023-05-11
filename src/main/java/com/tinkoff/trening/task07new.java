@@ -44,52 +44,64 @@ public class task07new {
         long startMem = Runtime.getRuntime().freeMemory();
 
 
-//        Scanner scanner = new Scanner(new FileInputStream("C:\\Users\\al121\\IdeaProjects\\Test\\src\\main\\java\\com\\tinkoff\\trening\\input6.txt"));
-        Scanner scanner = new Scanner(new FileInputStream("C:\\Users\\GVoichuk\\IdeaProjects\\Test\\src\\main\\java\\com\\tinkoff\\trening\\input7.txt"));
+        Scanner scanner = new Scanner(new FileInputStream("C:\\Users\\al121\\IdeaProjects\\Test\\src\\main\\java\\com\\tinkoff\\trening\\input7.txt"));
+//        Scanner scanner = new Scanner(new FileInputStream("C:\\Users\\al121\\IdeaProjects\\Test\\src\\main\\java\\com\\tinkoff\\trening\\input7full.txt"));
+//        Scanner scanner = new Scanner(new FileInputStream("C:\\Users\\GVoichuk\\IdeaProjects\\Test\\src\\main\\java\\com\\tinkoff\\trening\\input7.txt"));
 //        Scanner scanner = new Scanner(new FileInputStream("C:\\Users\\GVoichuk\\IdeaProjects\\Test\\src\\main\\java\\com\\tinkoff\\trening\\input7full.txt"));
         int n = scanner.nextInt();
-//        ArrayList<Integer> ff = new ArrayList<>();
+        List<Integer> ff = new ArrayList<>();
 //        for (int i = 0; i < n; i++) {
-//            ff.add(i + 1);
+//            ff.add(i);
 //        }
         int[] dd = new int[n];
-        ArrayList<Integer> mm = new ArrayList<>(n);
+//        ArrayList<Integer> mm = new ArrayList<>(n);
         Map<Integer, Integer> map = new HashMap<>();
 //        Arrays.fill(dd, -1);
         ArrayList<Integer> s = new ArrayList<>();
         int x = 0;
-//        int y = 0;
+        int y = 0;
         for (int i = 1; i <= n; i++) {
             int a = scanner.nextInt();
+            if (y != 0){
+                ff.add(y);
+            }
+            y = i;
             if (a - 1 != i && dd[a - 1] == 0){
                 dd[a - 1] = i;
 //                mm.set(a - 1, i);
 //                mm.add(a - 1, i);
                 map.put(a, i);
                 s.add(i);
+                y = 0;
             } else {
                 x = dd[a - 1];
 //                y = i;
                 dd[a - 1] = i;
                 map.put(a, i);
                 s.add(i);
+
             }
         }
 
+//        System.out.println("1");
         System.out.println("[4, 6, 1, 5, 2, 3]");
 
         System.out.println(Arrays.toString(dd));
 //        map.forEach((k, v) -> System.out.println(k + " " + v));
         System.out.println(x);
-        System.out.println(map);
+//        System.out.println(map);
 
-        System.out.println(s);
-        ArrayList<Integer> copyS = new ArrayList<>(s);
-        s.removeAll(map.values());
-        copyS.removeAll(map.keySet());
+//        System.out.println(s);
+//        ArrayList<Integer> copyS = new ArrayList<>(s);
+//        System.out.println("2");
+        System.out.println(ff);
+//        s.removeAll(map.values());
+//        System.out.println("3");
+//        copyS.removeAll(map.keySet());
+//        System.out.println("4");
 
-        System.out.println(s);
-        System.out.println(copyS);
+//        System.out.println(s);
+//        System.out.println(copyS);
 //        System.out.println(mm.indexOf(0));
 //        ff.removeAll(mm);
 //        System.out.println(ff);
