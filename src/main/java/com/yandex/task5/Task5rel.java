@@ -19,8 +19,8 @@ public class Task5rel {
         char[] chars = s.toCharArray();
         for (int i = 1; i <= n; i++) {
             Symbol symbol = new Symbol();
-            symbol.memM = ((int) chars[i - 1]) - 97;
-            symbol.memCount = 0;
+            symbol.tempM = ((int) chars[i - 1]) - 97;
+            symbol.tempCount = 0;
             mi.put(i, symbol);
         }
         for (int i = 1; i <= n; i++) {
@@ -30,17 +30,12 @@ public class Task5rel {
             mi.get(i).offset = scanner.nextInt();
         }
         scanner.close();
-
         long fullCount = 0;
-        long count;
         Set<Integer> temp;
         int j;
         int next;
-
         for (int i = 0; i < n; i++) {
-
             mi.forEach((u, v) -> v.reset());
-            count = 0;
             temp = new HashSet<>();
             j = 0;
             next = 0;
@@ -52,22 +47,22 @@ public class Task5rel {
                     currentSymbol = mi.get(next);
                 }
                 currentSymbol.count += 1;
-
                 if (currentSymbol.count > 1){
                     currentSymbol.m = (currentSymbol.m + (currentSymbol.count - 1) * currentSymbol.offset) % 26;
                     currentSymbol.count = 1;
                 }
-                if (!temp.contains(currentSymbol.m)){
-                    count +=  1;
+                if (temp.size() < 26){
                     temp.add(currentSymbol.m);
+                    fullCount = fullCount + temp.size();
+                    next = currentSymbol.next;
+                    j++;
+                } else {
+                    fullCount = fullCount + (long) temp.size() * (k - j);
+                    break;
                 }
-                fullCount = fullCount + count;
-                next = currentSymbol.next;
-                j++;
             }
         }
         System.out.println(fullCount);
-
     }
 
     private static class Symbol {
@@ -75,11 +70,12 @@ public class Task5rel {
         int next;
         int offset;
         int count;
-        int memM;
-        int memCount;
+        int tempM;
+        int tempCount;
+
         public void reset(){
-            m = memM;
-            count = memCount;
+            m = tempM;
+            count = tempCount;
         }
     }
 }

@@ -30,22 +30,20 @@ public class Task5 {
         }
         scanner.close();
 
-        StringBuilder sb = new StringBuilder();
+//        StringBuilder sb = new StringBuilder();
 
         long step1 = System.currentTimeMillis();
         System.out.println("Первый шаг: " + (step1 - start));
 
         long fullCount = 0;
-        long count;
         Set<Integer> temp;
         int j;
         int next;
 
         for (int i = 0; i < n; i++) {
 
-            sb.setLength(0);
+//            sb.setLength(0);
             mi.forEach((u, v) -> v.reset());
-            count = 0;
             temp = new HashSet<>();
             j = 0;
             next = 0;
@@ -62,15 +60,27 @@ public class Task5 {
                     currentSymbol.m = (currentSymbol.m + (currentSymbol.count - 1) * currentSymbol.offset) % 26;
                     currentSymbol.count = 1;
                 }
-                sb.append((char) (currentSymbol.m + 97));
-                if (!temp.contains(currentSymbol.m)){
-                    count +=  1;
+//                sb.append((char) (currentSymbol.m + 97));
+
+                /*
+                259999995297  1000000000
+                25999995297   100000000
+                2599995297    10000000
+                259995297     1000000
+                25995297      100000
+                2595297       10000
+                255297        1000
+                 */
+
+                if (temp.size() < 26){
                     temp.add(currentSymbol.m);
+                    fullCount = fullCount + temp.size();
+                    next = currentSymbol.next;
+                    j++;
+                } else {
+                    fullCount = fullCount + (long) temp.size() * (k - j);
+                    break;
                 }
-                fullCount = fullCount + count;
-                System.out.println(sb + " - " + count);
-                next = currentSymbol.next;
-                j++;
             }
         }
         long step2 = System.currentTimeMillis();
@@ -86,9 +96,7 @@ public class Task5 {
         int next;
         int offset;
         int count;
-
         int tempM;
-
         int tempCount;
 
         public void reset(){
