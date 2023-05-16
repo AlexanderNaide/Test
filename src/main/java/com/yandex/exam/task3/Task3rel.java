@@ -1,13 +1,12 @@
-package com.yandex.task3;
+package com.yandex.exam.task3;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.Scanner;
 
-public class Task3 {
-    public static void main(String[] args) throws FileNotFoundException {
-        //        Scanner scanner = new Scanner(System.in);
-        Scanner scanner = new Scanner(new File("src/main/java/com/yandex/task3/input.txt"));
+public class Task3rel {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
         int n = scanner.nextInt();
         ArrayList<Position> input = new ArrayList<>();
         for (int i = 0; i < n; i++) {

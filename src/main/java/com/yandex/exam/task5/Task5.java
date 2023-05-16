@@ -1,4 +1,4 @@
-package com.yandex.task5;
+package com.yandex.exam.task5;
 
 import java.io.File;
 import java.io.FileNotFoundException;

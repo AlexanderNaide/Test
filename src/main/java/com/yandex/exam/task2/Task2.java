@@ -1,4 +1,4 @@
-package com.yandex.task2;
+package com.yandex.exam.task2;
 
 import java.io.BufferedWriter;
 import java.io.File;

@@ -1,4 +1,4 @@
-package com.yandex.task1;
+package com.yandex.exam.task1;
 
 import java.io.*;
 import java.util.*;
