@@ -10,37 +10,36 @@ public class C {
     public static void main(String[] args) throws IOException {
         BufferedReader reader = new BufferedReader(new FileReader("C:\\Users\\GVoichuk\\IdeaProjects\\Test\\src\\main\\java\\com\\yandex\\study\\task4\\C"));
 //        BufferedReader reader = new BufferedReader(new FileReader("input.txt"));
-        Map<String, Integer> map = new HashMap<>();
-        StringBuilder buf = new StringBuilder();
 
-//        StringBuilder result = new StringBuilder();
+        Map<String, Integer> map = new HashMap<>();
+        String result = "";
+        int max = 0;
+
         while (reader.ready()){
-            int i = reader.read();
-            if (i != 32 && i != 13 && i != 10){
-                buf.append((char) i);
-            } else if (buf.length() != 0) {
-                String s = buf.toString();
-                buf.setLength(0);
-                if (map.containsKey(s)){
-                    map.put(s, map.get(s) + 1);
-                } else {
-                    map.put(s, 1);
+            String line = reader.readLine();
+            for (String s : line.split(" ")) {
+                if (result.equals("")){
+                    result = s;
                 }
-//                result.append(map.get(s)).append(" ");
+                if (!map.containsKey(s)){
+                    map.put(s, 1);
+                } else {
+                    map.replace(s, map.get(s) + 1);
+                }
+                int count = map.get(s);
+                if (count > max){
+                    max = count;
+                    result = s;
+                } else if (count == max){
+                    if (result.compareTo(s) > 0){
+                        result = s;
+                    }
+                }
             }
         }
-        if (buf.length() != 0) {
-            String s = buf.toString();
-            buf.setLength(0);
-            if (map.containsKey(s)){
-                map.put(s, map.get(s) + 1);
-            } else {
-                map.put(s, 1);
-            }
-//            result.append(map.get(s)).append(" ");
-        }
+
         reader.close();
 
-//        System.out.println(result);
+        System.out.println(result);
     }
 }
