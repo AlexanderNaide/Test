@@ -25,7 +25,7 @@ public class App {
                 dao.saveOrUpdate(student);
             }
 
-            // поиск по id - достанем студента №10
+            /*// поиск по id - достанем студента №10
             System.out.println("Студент id = 10");
             Student st10 = dao.findById(10L);
             System.out.println(st10.getId() + " " + st10.getName() + " баллы: " + st10.getMark());
@@ -80,7 +80,7 @@ public class App {
             studentList.sort(Comparator.comparing(Student::getMark));
             for (int i = studentList.size() - 1; i > studentList.size() - 11; i--) {
                 System.out.println(studentList.get(i).getId() + " " + studentList.get(i).getName() + " баллы: " + studentList.get(i).getMark());
-            }
+            }*/
 
         } catch (Exception e){
             e.printStackTrace();

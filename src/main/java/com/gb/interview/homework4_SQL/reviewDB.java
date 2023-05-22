@@ -232,8 +232,8 @@ public class reviewDB {
 
     public static void start() throws ClassNotFoundException, SQLException {
         Class.forName("com.mysql.cj.jdbc.Driver");
-        connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/test", "root", "6830");
-//        connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/test", "root", "312808895");
+//        connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/test", "root", "6830");
+        connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/test", "root", "312808895");
         statement = connection.createStatement();
     }
 
