@@ -25,16 +25,16 @@ public class Task3 {
             } else if (rightAnt.getCoordinate() < 0 || rightAnt.getCoordinate() > n) {
                 break;
             } else {
-                if (leftAnt.getCoordinate() + leftAnt.getStep() == rightAnt.getCoordinate()) {
+                if (leftAnt.nextStep() == rightAnt.getCoordinate()) {
                     leftAnt.reverse();
                     rightAnt.reverse();
                 }
-                leftAnt.setCoordinate(leftAnt.getCoordinate() + leftAnt.getStep());
-                if (rightAnt.getCoordinate() + rightAnt.getStep() == leftAnt.getCoordinate()) {
+                leftAnt.go();
+                if (rightAnt.nextStep() == leftAnt.getCoordinate()) {
                     leftAnt.reverse();
                     rightAnt.reverse();
                 }
-                rightAnt.setCoordinate(rightAnt.getCoordinate() + rightAnt.getStep());
+                rightAnt.go();
                 count++;
             }
         }
@@ -44,13 +44,20 @@ public class Task3 {
 
     @AllArgsConstructor
     @Getter
-    @Setter
     private static class Ant {
         private int coordinate;
         private int step;
 
         public void reverse() {
             step = step * -1;
+        }
+
+        public void go(){
+            coordinate += step;
+        }
+
+        public int nextStep(){
+            return coordinate + step;
         }
     }
 }
