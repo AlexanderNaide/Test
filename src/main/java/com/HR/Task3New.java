@@ -1,19 +1,16 @@
 package com.HR;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-
 public class Task3New {
     public static void main(String[] args) {
 
-        System.out.println(Move(4, 1, 3));
-        System.out.println(Move(4, 4, 1));
-        System.out.println(Move(4, 4, 3));
-        System.out.println(Move(3, 3, 1));
+        System.out.println(move(4, 1, 3)); //result 2
+        System.out.println(move(4, 4, 1)); //result 3
+        System.out.println(move(4, 4, 3)); //result 1
+        System.out.println(move(3, 3, 1)); //result 2
 
     }
 
-    public static int Move(int n, int left, int right) {
+    public static int move(int n, int left, int right) {
         int count = 0;
         int leftStep = -1;
         int rightStep = 1;
