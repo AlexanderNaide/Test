@@ -1,6 +1,7 @@
 package com.gb.test1;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class Test4 extends Test3 {
     public static void main(String[] args) {
@@ -19,6 +20,10 @@ public class Test4 extends Test3 {
         byte a = 127;
         a++;
         System.out.println(a);
+
+        ArrayList<? super Number> numbers = new ArrayList<Object>();
+        ArrayList<? extends Number> numbers2 = new ArrayList<Double>();
+
 
         char f = 'f';
         switch (f) {
