@@ -1,7 +1,10 @@
 package com.test;
 
 
+import com.mysql.cj.x.protobuf.MysqlxExpr;
+
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 public class Test7 {
@@ -17,6 +20,11 @@ public class Test7 {
 
         List<Integer> summaryList = summary.stream().flatMap(List::stream).toList();
         System.out.println(summaryList);
+
+        HashMap<String, Object> doct = new HashMap<>(){{
+            put("title", "TEST");
+            put("description", "Проверка нативного клиента");
+        }};
 
 
 
