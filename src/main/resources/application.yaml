@@ -1,0 +1,15 @@
+spring:
+  jpa:
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+    hibernate:
+      ddl-auto: create
+    open-in-view: false
+  datasource:
+    pg:
+      url: jdbc:postgresql://localhost:5432/crm?prepareThreshold=0
+      username: crm
+      password: crm
+      driver-class-name: org.postgresql.Driver
