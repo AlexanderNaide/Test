@@ -102,3 +102,16 @@ data class DayDefinition(
     // Окончания рабочего времени
     val endWorkTime: LocalTime? = null
 )
+
+data class CalendarRecordOutput(
+    var eventId: Int? = null,
+    var label: String = "",
+    var dayOfWeek: DayOfWeek? = null,
+    var dateFrom: LocalDate? = null,
+    var dateTo: LocalDate? = null,
+    var source: Source = Source.BY_SCHEDULE,
+    var dayType: DayType = DayType.WORK,
+    var beginWorkTime: LocalTime? = null,
+    var endWorkTime: LocalTime? = null,
+    var description: String? = null
+)
