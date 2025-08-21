@@ -1,7 +1,5 @@
 package com.test
 
-import com.ibm.icu.text.PluralRules
-
 fun main() {
 
     val parentList: MutableList<Any> = mutableListOf()
@@ -22,13 +20,13 @@ fun main() {
 
 }
 
-private fun test(list: List<Any>): List<Int> {
+private fun test(list: MutableList<*>): List<Int> {
     val result: MutableList<Int> = mutableListOf()
     for (i in list){
         if (i is Int) {
             result.add(i)
         } else if (i is MutableList<*>){
-            result.addAll(test(i as MutableList<Any>))
+            result.addAll(test(i))
         }
     }
     return result

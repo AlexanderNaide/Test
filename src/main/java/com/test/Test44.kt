@@ -3,19 +3,51 @@ package com.test
 
 fun main() {
 
-    val list = listOf(
-        Pair(1, "один"),
-        Pair(2, "два"),
-        Pair(3, "три"),
-        Pair(2, "четыре"),
-        Pair(3, "пять"),
-        Pair(2, "шесть"),
+    val node = Node(
+        id = 1,
+        child = listOf(
+            Node(
+                id = 2,
+                child = listOf(
+                    Node(
+                        id = 3,
+                        child = listOf()
+                    ),
+                    Node(
+                        id = 4,
+                        child = listOf()
+                    )
+                )
+            ),
+            Node(
+                id = 5,
+                child = listOf()
+            ),
+            Node(
+                id = 4,
+                child = listOf()
+            )
+        )
     )
 
-    val map = list.associateBy { it.first }
+    val parentNodeId = 2
+    val removableIds = listOf(4)
 
-    println("${list.size}/${map.size}")
-    map.forEach { println("${it.key} - ${it.value.second}")}
+    removeCheckmarkFromTree(node, parentNodeId, removableIds)
 
+    println()
 
+}
+
+class Node (
+    val id: Int?,
+    var child: List<Node>?
+)
+
+fun removeCheckmarkFromTree(node: Node, parentNodeId: Int, removableIds: List<Int>) {
+    node.child = node.child
+//        ?.filter { node.id != parentNodeId && !removableIds.contains(it.id) }
+        ?.filter { node.id == parentNodeId || !removableIds.contains(it.id) }
+//        ?.filter { true }
+        ?.onEach { removeCheckmarkFromTree(it, parentNodeId, removableIds) }
 }
